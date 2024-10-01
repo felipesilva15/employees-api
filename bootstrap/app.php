@@ -19,9 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (Throwable $e, $request) {
             if ($e instanceof HttpException) {
                 $error = [
-                    "code" =>"EXCPHAND001", 
-                    "message" => $e->getMessage(), 
-                    "endpoint" => $request->path()
+                    "result" => false, 
+                    "message" => $e->getMessage()
                 ];
     
                 return response()->json($error, $e->getStatusCode());

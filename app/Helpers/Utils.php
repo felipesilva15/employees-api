@@ -45,4 +45,44 @@ class Utils
 
         return $fields;
     }
+
+    public static function makeQueryResponse(array $fields, array $data): array {
+        $values = [];
+        $index = 0;
+
+        foreach ($data as $item) {
+            $record = [];
+
+            foreach ($fields as $field) {
+                array_push($record, [
+                    "value" => $item[$field["fieldName"]]
+                ]);
+            }
+
+            $value = [
+                "recNo" => $index,
+                "record" => $record
+            ];
+
+            array_push($values, $value);
+
+            $index++;
+        }
+
+        $response = [
+            "result" => true,
+            "message" => [
+                "fields" => $fields,
+                "values" => $values
+            ]
+        ];
+
+        return $response;
+    } 
+
+    public static function convertDate(string $date) {
+        $dateSplited = explode('/', $date);
+
+        return "{$dateSplited[2]}-{$dateSplited[1]}-{$dateSplited[0]}";
+    }
 }

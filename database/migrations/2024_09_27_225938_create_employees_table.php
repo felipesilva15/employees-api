@@ -17,12 +17,12 @@ return new class extends Migration
             $table->string('cpf', 11);
             $table->string('registration_number', 100);
             $table->smallInteger('gender');
-            $table->string('cpts_number', 100);
-            $table->string('cpts_serial', 60);
-            $table->string('cpts_uf', 2);
-            $table->date('cpts_date');
+            $table->string('cpts_number', 100)->nullable();
+            $table->string('cpts_serial', 60)->nullable();
+            $table->string('cpts_uf', 2)->nullable();
+            $table->date('cpts_date')->nullable();
             $table->date('admission_date');
-            $table->date('dismissal_date');
+            $table->date('dismissal_date')->nullable();
             $table->integer('cost_center');
             $table->string('capacity_unit', 12);
             $table->decimal('salary', 10, 2);

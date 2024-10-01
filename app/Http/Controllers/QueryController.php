@@ -14,7 +14,7 @@ class QueryController extends Controller
 
     public function __construct(Request $request) {
         $this->request = $request;
-        $this->integrationMode = "10008";
+        $this->integrationMode = "10004";
     }
 
     public function index() {
@@ -36,7 +36,7 @@ class QueryController extends Controller
         return response()->json($data, 200);
     }
 
-    public function query10008($params) {
+    public function query10005($params) {
         $filters = [
             "Empresa" => [
                 "field" => "Cod_Empresa",

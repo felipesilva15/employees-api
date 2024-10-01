@@ -54,8 +54,10 @@ class Utils
             $record = [];
 
             foreach ($fields as $field) {
+                $value = Utils::checkAndSetMask($field["fieldName"], $item[$field["fieldName"]]);
+
                 array_push($record, [
-                    "value" => $item[$field["fieldName"]]
+                    "value" => $value
                 ]);
             }
 
@@ -84,5 +86,19 @@ class Utils
         $dateSplited = explode('/', $date);
 
         return "{$dateSplited[2]}-{$dateSplited[1]}-{$dateSplited[0]}";
+    }
+
+    public static function checkAndSetMask($field, $value): mixed {
+        switch (strtolower($field)) {
+            case 'cpf':
+                $value = preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $value);
+                break;
+
+            case 'nr_rg':
+                $value = preg_replace('/(\d{2})(\d{3})(\d{3})(\w{1})/', '$1.$2.$3-$4', $value);
+                break;
+        }
+
+        return $value;
     }
 }

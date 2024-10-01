@@ -15,11 +15,4 @@ class Position extends Model
         'id',
         'name'
     ];
-
-    public static function rules(): array {
-        return [
-            'id' => 'required|string|max:20|unique:positions',
-            'name' => 'required|string|max:80'
-        ];
-    }
 }

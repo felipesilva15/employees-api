@@ -15,11 +15,4 @@ class Enterprise extends Model
         'id',
         'name'
     ];
-
-    public static function rules(): array {
-        return [
-            'id' => 'required|string|max:4|unique:enterprises',
-            'name' => 'required|string|max:40'
-        ];
-    }
 }

@@ -55,11 +55,9 @@ abstract class Controller extends BaseController
     }
 
     public function store(Request $request) {
-        if (method_exists($this->model, 'rules')){
-            $request->validate($this->model::rules());
-        }
+        $requestData = $this->validateRequest($request);
         
-        $data = $this->model::create($request->all());
+        $data = $this->model::create($requestData);
 
         return response()->json($data, 201);
     }
@@ -71,11 +69,9 @@ abstract class Controller extends BaseController
             throw new MasterNotFoundHttpException;
         }
 
-        if (method_exists($this->model, 'rules')){
-            $request->validate($this->model::rules());
-        }
-            
-        $data->update($request->all());
+        $requestData = $this->validateRequest($request);
+        
+        $data->update($requestData);
 
         return response()->json($data, 200);
     }
@@ -90,5 +86,25 @@ abstract class Controller extends BaseController
         $data->delete();
 
         return response()->json(['message' => 'Registro deletado com sucesso!'], 200);
+    }
+
+    protected function validateRequest(Request $request): mixed {
+        $formRequestClass = $this->getFormRequestClass();
+
+        if (class_exists($formRequestClass)) {
+            $formRequest = app($formRequestClass);
+            $data = $formRequest->validated();
+        } else {
+            $data = $request->all();
+        }
+
+        return $data;
+    }
+
+    protected function getFormRequestClass(): string {
+        $modelClass = class_basename($this->model);
+        $requestClass = "App\\Http\\Requests\\{$modelClass}Request";
+
+        return $requestClass;
     }
 }

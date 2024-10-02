@@ -21,7 +21,7 @@ class Utils
             SELECT
                 COLUMN_NAME, 
                 DATA_TYPE, 
-                CHARACTER_MAXIMUM_LENGTH, 
+                COALESCE(CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION) AS FIELD_LENGTH, 
                 NUMERIC_SCALE 
             FROM information_schema.columns 
             WHERE 
@@ -36,7 +36,7 @@ class Utils
                 'fieldName' => $column->COLUMN_NAME,
                 'fieldType' => Utils::$fieldTypes[$column->DATA_TYPE] ?? 0,
                 'fieldMask' => '',
-                'fieldLength' => $column->CHARACTER_MAXIMUM_LENGTH ?? 0,
+                'fieldLength' => $column->FIELD_LENGTH ?? 0,
                 'fieldDecimals' => $column->NUMERIC_SCALE ?? 0
             ];
 

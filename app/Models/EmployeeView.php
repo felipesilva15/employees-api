@@ -13,4 +13,8 @@ class EmployeeView extends Model
     public $timestamps = false;
     protected $primaryKey = null;
     public $incrementing = false;
+    
+    protected $casts = [
+        "Vl_salario" => "double"
+    ];
 }

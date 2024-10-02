@@ -15,6 +15,8 @@ class EmployeeView extends Model
     public $incrementing = false;
     
     protected $casts = [
-        "Vl_salario" => "double"
+        "Vl_salario" => "string",
+        "Centro_custo" => "string",
+        "Sexo" => "string"
     ];
 }

@@ -54,7 +54,7 @@ class Utils
             $record = [];
 
             foreach ($fields as $field) {
-                $value = Utils::checkAndSetMask($field["fieldName"], $item[$field["fieldName"]]);
+                $value = Utils::treatQueryValue($field, $item[$field["fieldName"]]);
 
                 array_push($record, [
                     "value" => $value
@@ -82,14 +82,28 @@ class Utils
         return $response;
     } 
 
+    public static function treatQueryValue(array $fieldDetails, $value): string {
+        if (is_null($value)) {
+            return "";
+        }
+
+        if ($fieldDetails["fieldType"] == Utils::$fieldTypes["decimal"]) {
+            $value = str_replace(".", ",", $value);
+        }
+
+        $value = Utils::checkAndSetMask($fieldDetails["fieldName"], $value);
+
+        return $value;
+    }
+
     public static function convertDate(string $date) {
         $dateSplited = explode('/', $date);
 
         return "{$dateSplited[2]}-{$dateSplited[1]}-{$dateSplited[0]}";
     }
 
-    public static function checkAndSetMask($field, $value): mixed {
-        switch (strtolower($field)) {
+    public static function checkAndSetMask($fieldName, $value): mixed {
+        switch (strtolower($fieldName)) {
             case 'cpf':
                 $value = Mask::Cpf($value);
                 break;

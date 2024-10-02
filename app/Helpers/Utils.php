@@ -91,11 +91,11 @@ class Utils
     public static function checkAndSetMask($field, $value): mixed {
         switch (strtolower($field)) {
             case 'cpf':
-                $value = preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $value);
+                $value = Mask::Cpf($value);
                 break;
 
             case 'nr_rg':
-                $value = preg_replace('/(\d{2})(\d{3})(\d{3})(\w{1})/', '$1.$2.$3-$4', $value);
+                $value = Mask::Rg($value);
                 break;
         }
 

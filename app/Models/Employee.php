@@ -27,4 +27,8 @@ class Employee extends Model
         'position_id',
         'enterprise_id'
     ];
+    
+    protected $casts = [
+        'salary' => 'double'
+    ];
 }

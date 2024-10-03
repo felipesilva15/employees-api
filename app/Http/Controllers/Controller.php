@@ -6,6 +6,21 @@ use App\Exceptions\MasterNotFoundHttpException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
+/**
+ * @OA\Info(
+ *      title="Employee API Docs",
+ *      version="1.0.0",
+ *      description="API para consulta de funcionários",
+ *      @OA\Contact(
+ *          email="felipe.allware@gmail.com",
+ *          name="Felipe Silva"
+ *      ),
+ *      @OA\License(
+ *          name="Licença API",
+ *          url="https://github.com/felipesilva15/employee-api/blob/main/LICENSE"
+ *      )
+ * )
+ */
 abstract class Controller extends BaseController
 {
     protected $model;

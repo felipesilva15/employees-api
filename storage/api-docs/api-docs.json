@@ -1,0 +1,348 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Employee API Docs",
+        "description": "API para consulta de funcionários",
+        "contact": {
+            "name": "Felipe Silva",
+            "email": "felipe.allware@gmail.com"
+        },
+        "license": {
+            "name": "Licença API",
+            "url": "https://github.com/felipesilva15/employee-api/blob/main/LICENSE"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/application": {
+            "get": {
+                "tags": [
+                    "Application"
+                ],
+                "summary": "List all applications",
+                "operationId": "4e0a5b51b8c9343deaf00302868fa724",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Application ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Application name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "client_id",
+                        "in": "query",
+                        "description": "Application Client ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Application list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Application"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Application"
+                ],
+                "summary": "Registers an application",
+                "operationId": "cc41c1539aa97a2fcda663894b0afec3",
+                "requestBody": {
+                    "description": "Data for creating a new application",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Application"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registered application data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Application"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/application/{id}": {
+            "get": {
+                "tags": [
+                    "Application"
+                ],
+                "summary": "List an application by ID",
+                "operationId": "b1a2862dde72db57d6767b4472bed205",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Application ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Application data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Application"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Record not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Application"
+                ],
+                "summary": "Update an application",
+                "operationId": "da9299ce71fdc243cf107e3a28fd7d67",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Application ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Data for update application",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Application"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated application data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Application"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Record not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Application"
+                ],
+                "summary": "Deletes an application",
+                "operationId": "b1ce7ef19f645a66fa3194b878595ae3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Application ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return message",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Registro deletado com sucesso!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Record not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ApiErrorDTO": {
+                "properties": {
+                    "result": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Error ocurried"
+                    }
+                },
+                "type": "object"
+            },
+            "Application": {
+                "required": [
+                    "name",
+                    "client_id",
+                    "client_secret"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 80,
+                        "minLength": 2,
+                        "example": "App"
+                    },
+                    "client_id": {
+                        "type": "string",
+                        "maxLength": 40,
+                        "minLength": 24,
+                        "example": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+                    },
+                    "client_secret": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 10,
+                        "example": "abcdefghijklmnopqrstuvwxyz123"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-30T03:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-30T03:00:00.000000Z"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Application",
+            "description": "Application"
+        }
+    ]
+}

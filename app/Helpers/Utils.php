@@ -2,6 +2,11 @@
 
 namespace App\Helpers;
 
+use App\Data\System\FieldDetails;
+use App\Data\System\QueryDTO;
+use App\Data\System\QueryMessage;
+use App\Data\System\QueryValues;
+use App\Data\System\RecordValue;
 use Illuminate\Support\Facades\DB;
 
 class Utils
@@ -32,13 +37,13 @@ class Utils
         $fields = [];
 
         foreach ($columns as $column) {
-            $field = [
-                'fieldName' => $column->COLUMN_NAME,
-                'fieldType' => Utils::$fieldTypes[$column->DATA_TYPE] ?? 0,
-                'fieldMask' => '',
-                'fieldLength' => $column->FIELD_LENGTH ?? 0,
-                'fieldDecimals' => $column->NUMERIC_SCALE ?? 0
-            ];
+            $field = new FieldDetails(
+                $column->COLUMN_NAME,
+                Utils::$fieldTypes[$column->DATA_TYPE] ?? 0,
+                '',
+                $column->FIELD_LENGTH ?? 0,
+                $column->NUMERIC_SCALE ?? 0
+            );
 
             array_push($fields, $field);
         }
@@ -46,52 +51,41 @@ class Utils
         return $fields;
     }
 
-    public static function makeQueryResponse(array $fields, array $data): array {
-        $values = [];
+    public static function makeQueryResponse(array $fields, array $data): QueryDTO {
         $index = 0;
+        $values = [];
 
         foreach ($data as $item) {
             $record = [];
 
             foreach ($fields as $field) {
-                $value = Utils::treatQueryValue($field, $item[$field["fieldName"]]);
+                $value = Utils::treatQueryValue($field, $item[$field->fieldName]);
 
-                array_push($record, [
-                    "value" => $value
-                ]);
+                array_push($record, new RecordValue($value));
             }
 
-            $value = [
-                "recNo" => $index,
-                "record" => $record
-            ];
-
+            $value = new QueryValues($index, $record);
             array_push($values, $value);
 
             $index++;
         }
 
-        $response = [
-            "result" => true,
-            "message" => [
-                "fields" => $fields,
-                "values" => $values
-            ]
-        ];
+        $message = new QueryMessage($fields, $values);
+        $response = new QueryDTO(true, $message);
 
         return $response;
     } 
 
-    public static function treatQueryValue(array $fieldDetails, $value): string {
+    public static function treatQueryValue(FieldDetails $fieldDetails, $value): string {
         if (is_null($value)) {
             return "";
         }
 
-        if ($fieldDetails["fieldType"] == Utils::$fieldTypes["decimal"]) {
+        if ($fieldDetails->fieldType == Utils::$fieldTypes["decimal"]) {
             $value = str_replace(".", ",", $value);
         }
 
-        $value = Utils::checkAndSetMask($fieldDetails["fieldName"], $value);
+        $value = Utils::checkAndSetMask($fieldDetails->fieldName, $value);
 
         return $value;
     }

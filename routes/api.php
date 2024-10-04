@@ -1,5 +1,6 @@
 <?php
 
+use App\Data\System\RecordValue;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
@@ -17,4 +18,12 @@ Route::get('/REST/API.APDATA.V1/AUTH', [AuthController::class, 'authentication']
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/REST/API.APDATA.V1/QUERYS', [QueryController::class, 'index']);
+});
+
+Route::get('/test', function() {
+    $data = [];
+
+    array_push($data, new RecordValue("valor"));
+
+    return response()->json($data, 200);
 });

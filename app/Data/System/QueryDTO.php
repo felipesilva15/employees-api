@@ -12,9 +12,9 @@ namespace App\Data\System;
 class QueryDTO
 {
     public bool $result;
-    public object $message;
+    public QueryMessage $message;
 
-    public function __construct(bool $result = true, string $message) {
+    public function __construct(bool $result = true, QueryMessage $message) {
         $this->result = $result;
         $this->message = $message;
     }

@@ -16,9 +16,9 @@ namespace App\Data\System;
  */
 class RecordValue
 {
-    public string $value;
+    public mixed $value;
 
-    public function __construct(string $value) {
+    public function __construct(mixed $value) {
         $this->value = $value;
     }
 }

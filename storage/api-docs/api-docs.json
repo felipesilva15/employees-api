@@ -299,6 +299,90 @@
                 },
                 "type": "object"
             },
+            "FieldDetails": {
+                "properties": {
+                    "fieldName": {
+                        "type": "string",
+                        "example": "Cpf"
+                    },
+                    "fieldType": {
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "fieldMask": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "fieldLength": {
+                        "type": "integer",
+                        "example": 11
+                    },
+                    "fieldDecimals": {
+                        "type": "integer",
+                        "example": 0
+                    }
+                },
+                "type": "object"
+            },
+            "QueryDTO": {
+                "properties": {
+                    "result": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "message": {
+                        "$ref": "#/components/schemas/QueryMessage"
+                    }
+                },
+                "type": "object"
+            },
+            "QueryMessage": {
+                "properties": {
+                    "fields": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FieldDetails"
+                        }
+                    },
+                    "values": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/QueryValues"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "QueryValues": {
+                "properties": {
+                    "recNo": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "record": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecordValue"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "RecordValue": {
+                "properties": {
+                    "value": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "integer"
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            },
             "Application": {
                 "required": [
                     "name",

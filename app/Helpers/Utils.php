@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class Utils
 {
-    public static $fieldTypes = [
+    public static array $fieldTypes = [
         'int' => 3,
         'bigint' => 3,
         'smallint' => 3,
@@ -76,7 +76,7 @@ class Utils
         return $response;
     } 
 
-    public static function treatQueryValue(FieldDetails $fieldDetails, $value): string {
+    public static function treatQueryValue(FieldDetails $fieldDetails, mixed $value): string {
         if (is_null($value)) {
             return "";
         }
@@ -96,7 +96,7 @@ class Utils
         return "{$dateSplited[2]}-{$dateSplited[1]}-{$dateSplited[0]}";
     }
 
-    public static function checkAndSetMask($fieldName, $value): mixed {
+    public static function checkAndSetMask(string $fieldName, mixed $value): mixed {
         switch (strtolower($fieldName)) {
             case 'cpf':
                 $value = Mask::Cpf($value);

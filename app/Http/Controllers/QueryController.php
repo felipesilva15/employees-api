@@ -17,6 +17,29 @@ class QueryController extends Controller
         $this->integrationMode = "10004";
     }
 
+    /**
+     * @OA\Post(
+     *      path="/api/REST/API.APDATA.V1/QUERYS",
+     *      tags={"Query"},
+     *      summary="Data query",
+     *      @OA\RequestBody(
+     *         required=true,
+     *         description="Request body for query",
+     *         @OA\JsonContent(ref="#/components/schemas/QueryRequest")
+     *      ),
+     *      @OA\Response(
+     *          response="200", 
+     *          description="Query data",
+     *          @OA\JsonContent(ref="#/components/schemas/QueryDTO")
+     *      ),
+     *      @OA\Response(
+     *          response="401", 
+     *          description="Unauthorized",
+     *          @OA\JsonContent(ref="#/components/schemas/ApiErrorDTO")
+     *      ),
+     *      security={{"bearerAuth":{}}}
+     * )
+     */
     public function index() {
         $formRequest = app(QueryRequest::class);
         $params = $formRequest->validated();

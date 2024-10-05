@@ -282,6 +282,116 @@
                     }
                 }
             }
+        },
+        "/api/REST/API.APDATA.V1/AUTH": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Authenticate",
+                "operationId": "d296dfcc5505114873593f8d2268df53",
+                "parameters": [
+                    {
+                        "name": "grant_type",
+                        "in": "query",
+                        "description": "Grant Type",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "client_id",
+                        "in": "query",
+                        "description": "Client ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "client_secret",
+                        "in": "query",
+                        "description": "Client Secret",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Access token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL1JFU1QvQVBJLkFQREFUQS5WMS9BVVRIIiwiaWF0IjoxNzI4MDYzNTg3LCJleHAiOjE3MjgwNjcxODcsIm5iZiI6MTcyODA2MzU4NywianRpIjoiTlVCaVpWbDhQalJWRzFTdiIsInN1YiI6IjEiLCJwcnYiOiIxMTU1YTk0ZjVhMzE0MTIwYzQ2NzlmNzA4OGQ5MTFiMDZhZTlmYjU5In0.hVgAu-mkfvYILYGmJHgrsMY6JmLUZuhaTa9yNLNDyP8"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/REST/API.APDATA.V1/QUERYS": {
+            "post": {
+                "tags": [
+                    "Query"
+                ],
+                "summary": "Data query",
+                "operationId": "14a174d21c45354fe16b5c8776384e48",
+                "requestBody": {
+                    "description": "Request body for query",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/QueryRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Query data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/QueryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -383,6 +493,39 @@
                 },
                 "type": "object"
             },
+            "QueryRequest": {
+                "required": [
+                    "integrationMode",
+                    "queryId"
+                ],
+                "properties": {
+                    "integrationMode": {
+                        "type": "string",
+                        "example": "10000"
+                    },
+                    "queryId": {
+                        "type": "integer",
+                        "example": 10000
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "paramName": {
+                                    "type": "string",
+                                    "example": "Data_Inicio"
+                                },
+                                "value": {
+                                    "type": "string",
+                                    "example": "2024/01/01"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "Application": {
                 "required": [
                     "name",
@@ -421,12 +564,28 @@
                 },
                 "type": "object"
             }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
         }
     },
     "tags": [
         {
             "name": "Application",
             "description": "Application"
+        },
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Query",
+            "description": "Query"
         }
     ]
 }

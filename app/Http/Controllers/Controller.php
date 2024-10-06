@@ -28,6 +28,14 @@ abstract class Controller extends BaseController
     protected $dto;
 
     public function index() {
+        $formRequestClass = $this->getFormRequestClass();
+        $rules = [];
+
+        if (class_exists($formRequestClass)) {
+            $request = new $formRequestClass();
+            $rules = $request->rules();
+        }
+
         $query = $this->model::query();
         $filters = $this->request->all();
 
@@ -37,11 +45,9 @@ abstract class Controller extends BaseController
         // Filtra todos os campos que estão na propriedade fillable da model
         foreach ($filters as $field => $value) {
             if (in_array($field, $this->model->getFillable()) || in_array($field, $othersFillableFields)) {
-                if (method_exists($this->model, 'rules')){
-                    if ($this->model::rules()[$field] && str_contains($this->model::rules()[$field], 'string')) {
-                        $query->where($field, 'like', '%'.trim($value).'%');
-                        continue;
-                    }
+                if (isset($rules[$field]) && str_contains($rules[$field], 'string')){
+                    $query->where($field, 'like', '%'.trim($value).'%');
+                    continue;
                 }
 
                 $query->where($field, $value);

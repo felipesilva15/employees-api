@@ -346,6 +346,391 @@
                 }
             }
         },
+        "/api/employee": {
+            "get": {
+                "tags": [
+                    "Employee"
+                ],
+                "summary": "List all employees",
+                "operationId": "aec9115c2e1b82bd5139f3ba90d8cd76",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Employee ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Employee name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cpf",
+                        "in": "query",
+                        "description": "Employee CPF",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "registration_number",
+                        "in": "query",
+                        "description": "Employee registration number",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "gender",
+                        "in": "query",
+                        "description": "Employee gender",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "cpts_number",
+                        "in": "query",
+                        "description": "Employee CPTS number",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cpts_serial",
+                        "in": "query",
+                        "description": "Employee CPTS serial",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cpts_uf",
+                        "in": "query",
+                        "description": "Employee CPTS UF",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cpts_date",
+                        "in": "query",
+                        "description": "Employee CPTS date",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "admission_date",
+                        "in": "query",
+                        "description": "Employee admission date",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "dismissal_date",
+                        "in": "query",
+                        "description": "Employee dismissal date",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "cost_center",
+                        "in": "query",
+                        "description": "Employee cost center",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "capacity_unit",
+                        "in": "query",
+                        "description": "Employee capacity unit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "salary",
+                        "in": "query",
+                        "description": "Employee salary",
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "rg",
+                        "in": "query",
+                        "description": "Employee RG",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "position_id",
+                        "in": "query",
+                        "description": "Employee position ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "enterprise_id",
+                        "in": "query",
+                        "description": "Employee enterprise ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Employee list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Employee"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Employee"
+                ],
+                "summary": "Registers an employee",
+                "operationId": "6a4f1e0943433f32bb808e136da78430",
+                "requestBody": {
+                    "description": "Data for creating a new employee",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Employee"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registered employee data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Employee"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/employee/{id}": {
+            "get": {
+                "tags": [
+                    "Employee"
+                ],
+                "summary": "List an employee by ID",
+                "operationId": "7002cd80d065e00fc43b1794ed7b4d4f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Employee ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Employee data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Employee"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Record not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Employee"
+                ],
+                "summary": "Update an employee",
+                "operationId": "b1f58be54bff0320d2f19085bf535278",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Employee ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Data for update employee",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Employee"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated employee data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Employee"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Record not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Employee"
+                ],
+                "summary": "Deletes an employee",
+                "operationId": "3d61663792ac65f6dbcbf97c9e90e7e2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Employee ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return message",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Registro deletado com sucesso!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Record not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/enterprise": {
             "get": {
                 "tags": [
@@ -1086,6 +1471,116 @@
                 },
                 "type": "object"
             },
+            "Employee": {
+                "required": [
+                    "name",
+                    "cpf",
+                    "registration_number",
+                    "gender",
+                    "admission_date",
+                    "cost_center",
+                    "capacity_unit",
+                    "salary",
+                    "rg",
+                    "position_id",
+                    "enterprise_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 70,
+                        "example": "Anderson Nunes"
+                    },
+                    "cpf": {
+                        "type": "string",
+                        "maxLength": 11,
+                        "minLength": 11,
+                        "example": "05645221045"
+                    },
+                    "registration_number": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "example": "35468598"
+                    },
+                    "gender": {
+                        "type": "integer",
+                        "maximum": 2,
+                        "example": 1
+                    },
+                    "cpts_number": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "example": "818232"
+                    },
+                    "cpts_serial": {
+                        "type": "string",
+                        "maxLength": 60,
+                        "example": "8847"
+                    },
+                    "cpts_uf": {
+                        "type": "string",
+                        "maxLength": 2,
+                        "example": "SP"
+                    },
+                    "cpts_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2022-01-01"
+                    },
+                    "admission_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2022-01-01"
+                    },
+                    "dismissal_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": null
+                    },
+                    "cost_center": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "capacity_unit": {
+                        "type": "string",
+                        "maxLength": 12,
+                        "example": "411405040101"
+                    },
+                    "salary": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 2015.9
+                    },
+                    "rg": {
+                        "type": "string",
+                        "maxLength": 9,
+                        "example": "55698546X"
+                    },
+                    "position_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "enterprise_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-30T03:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-30T03:00:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
             "Enterprise": {
                 "required": [
                     "id",
@@ -1162,6 +1657,10 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Employee",
+            "description": "Employee"
         },
         {
             "name": "Enterprise",

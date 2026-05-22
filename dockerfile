@@ -1,37 +1,77 @@
-FROM php:8.2-fpm-alpine
-
-# Instala o composer
-RUN docker-php-ext-install pdo pdo_mysql
-RUN curl -sS https://getcomposer.org/installer | php -- \
-     --install-dir=/usr/local/bin --filename=composer
+# ============================================================
+# Stage 1 – Dependências PHP via Composer
+# ============================================================
+FROM composer:2 AS vendor
 
 WORKDIR /app
 
-# Copia os arquivos do projeto
-COPY . . 
-COPY .env.example .env 
+# Copia lock + json primeiro para aproveitar o cache de layers
+COPY composer.json composer.lock ./
 
-# Define as variáveis de ambiente no Dockerfile
-ARG DB_CONNECTION=mysql
-ARG DB_HOST
-ARG DB_PORT
-ARG DB_DATABASE
-ARG DB_USERNAME
-ARG DB_PASSWORD
-ARG APP_ENV=production
+RUN composer install \
+    --no-dev \
+    --no-scripts \
+    --no-autoloader \
+    --prefer-dist \
+    --ignore-platform-reqs
 
-# Substitui as variáveis no arquivo .env pelas variáveis de ambiente
-RUN sed -i "s#DB_HOST=.*#DB_HOST=${DB_HOST}#" .env \
-    && sed -i "s#DB_PORT=.*#DB_PORT=${DB_PORT}#" .env \
-    && sed -i "s#DB_DATABASE=.*#DB_DATABASE=${DB_DATABASE}#" .env \
-    && sed -i "s#DB_USERNAME=.*#DB_USERNAME=${DB_USERNAME}#" .env \
-    && sed -i "s#DB_PASSWORD=.*#DB_PASSWORD=${DB_PASSWORD}#" .env \
-    && sed -i "s#APP_ENV=.*#APP_ENV=${APP_ENV}#" .env
+COPY . ./
 
-RUN composer install --ignore-platform-req=ext-bcmath
-RUN php artisan migrate --force
-RUN php artisan route:cache && php artisan view:cache
-RUN php artisan key:generate
-RUN php artisan jwt:secret
+RUN composer dump-autoload --optimize --no-dev
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# ============================================================
+# Stage 2 – Imagem final de produção
+# ============================================================
+FROM php:8.4-apache
+
+# Instala extensões e limpa cache
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libzip-dev \
+        unzip \
+        libpng-dev \
+        libonig-dev \
+        libxml2-dev \
+        libpq-dev \
+        gettext-base \
+    && docker-php-ext-install \
+        pdo \
+        pdo_mysql \
+        zip \
+        opcache \
+    && apt-get purge -y --auto-remove \
+    && rm -rf /var/lib/apt/lists/*
+
+# Habilita mod_rewrite para o Laravel
+RUN a2enmod rewrite
+
+# VirtualHost próprio
+COPY docker/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+
+# Configurações de PHP/OPcache
+COPY docker/php.ini /usr/local/etc/php/conf.d/custom.ini
+
+WORKDIR /var/www/html
+
+# Copia o código da aplicação com ownership correto direto no COPY
+COPY --chown=www-data:www-data . .
+COPY --chown=www-data:www-data --from=vendor /app/vendor ./vendor
+
+# Garante que os diretórios necessários existam com permissões corretas.
+RUN mkdir -p storage/logs \
+             storage/framework/cache \
+             storage/framework/sessions \
+             storage/framework/views \
+             bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache \
+    && chmod -R 755 public
+
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+EXPOSE 80
+
+# ENTRYPOINT roda o script de inicialização (migrations, caches, etc.)
+# CMD é passado como argumento para o entrypoint e pode ser sobrescrito
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["apache2-foreground"]

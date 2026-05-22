@@ -1,0 +1,51 @@
+# Controle de versão
+.git
+.gitignore
+
+# Editores e IDEs
+.vscode
+.idea
+*.swp
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Dependências
+vendor
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Ambiente local
+# O .env de produção é gerado em runtime via entrypoint.sh + .env.template
+.env
+.env.*
+!.env.template
+
+# Logs e bancos de dados locais
+*.log
+*.sqlite
+*.bak
+*.zip
+
+# Composer binário (não é necessário na imagem)
+composer.phar
+
+# Chaves e dados sensíveis de storage
+storage/*.key
+storage/debugbar
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+bootstrap/cache/*.php
+
+# Testes
+phpunit.xml
+tests/
+coverage/
+.env.testing
+
+# Docker
+docker-compose*.yml
